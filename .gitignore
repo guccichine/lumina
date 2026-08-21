@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+photos/
+photos/.lumina/
+lumina-config.json
+*.apk
+.gradle/
+android/.gradle/
+android/build/
+android/app/build/
+android/app/src/main/assets/www/
+.idea/
+*.iml
+local.properties

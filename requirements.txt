@@ -1,0 +1,3 @@
+# Lumina runs on the Python standard library.
+# Optional, used automatically when present:
+# pillow>=10

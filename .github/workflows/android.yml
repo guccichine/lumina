@@ -1,0 +1,62 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "17"
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Bundle web UI into the Android app
+        run: |
+          mkdir -p android/app/src/main/assets/www
+          cp static/index.html static/app.css static/app.js static/favicon.svg android/app/src/main/assets/www/
+
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: "8.7"
+
+      - name: Assemble release APK
+        working-directory: android
+        run: gradle assembleRelease --no-daemon
+
+      - name: Stage APK
+        run: |
+          mkdir -p dist
+          cp android/app/build/outputs/apk/release/*.apk dist/lumina.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: lumina-apk
+          path: dist/lumina.apk
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest-apk
+          name: Lumina APK
+          files: dist/lumina.apk
+          body: |
+            Install **lumina.apk** on your Android phone.
+
+            1. Download the APK below
+            2. Allow install from this browser / Files
+            3. Open Lumina → **Accounts**
+            4. Sign in to Google Photos, or tap **Import from Samsung Gallery**
+
+            This build is signed with the public debug key so you can sideload it. Play Store publishing is not included.
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
