@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lumina — photos, already filed</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/app.css" />
+  <link rel="icon" href="/static/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+  <div id="app">
+    <header class="top">
+      <a class="brand" href="#/" aria-label="Lumina home">
+        <svg class="mark" viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="3" y="7" width="18" height="18" rx="4" fill="#e8f0fe"/>
+          <rect x="9" y="5" width="20" height="20" rx="5" fill="#1a73e8"/>
+          <path d="M14 12h10v6.5a3.5 3.5 0 0 1-3.5 3.5H14z" fill="#8ab4f8"/>
+        </svg>
+        <span>Lumina</span>
+      </a>
+      <form class="search" id="search-form" role="search">
+        <svg viewBox="0 0 24 24" class="search-icon" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/>
+          <path d="M20 20l-3.2-3.2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+        <input id="search" type="search" placeholder="Search photos, types, dates…" autocomplete="off" />
+        <button type="button" id="search-clear" class="ghost icon-btn" hidden>✕</button>
+      </form>
+      <div class="top-actions">
+        <button type="button" class="ghost" id="btn-accounts">Accounts</button>
+        <button type="button" class="ghost" id="btn-path" title="Library folder">Folder</button>
+        <button type="button" class="ghost" id="btn-upload">Upload</button>
+        <button type="button" class="primary" id="btn-sort">Sort into folders</button>
+      </div>
+    </header>
+    <div class="shell">
+      <aside class="sidebar" id="sidebar">
+        <nav>
+          <button class="nav-item active" data-view="all">
+            <span class="nav-ico" aria-hidden="true">▦</span>
+            All photos
+            <em id="count-all">0</em>
+          </button>
+          <p class="nav-label">Types</p>
+          <div id="album-list"></div>
+          <p class="nav-label">Library</p>
+          <button class="nav-item" data-view="trash">
+            <span class="nav-ico" aria-hidden="true">⌂</span>
+            Trash
+            <em id="count-trash">0</em>
+          </button>
+        </nav>
+        <p class="sidebar-note" id="library-path"></p>
+      </aside>
+      <main class="main">
+        <div class="main-head">
+          <div>
+            <h1 id="view-title">All photos</h1>
+            <p class="sub" id="view-sub">Your library, grouped the way Google Photos would — by what they are.</p>
+          </div>
+          <div class="main-actions" id="view-actions"></div>
+        </div>
+        <div class="chips" id="chips" hidden></div>
+        <div id="grid" class="grid-wrap"></div>
+      </main>
+    </div>
+  </div>
+  <div class="select-bar" id="select-bar" hidden>
+    <span id="select-count">0 selected</span>
+    <button type="button" class="ghost" id="btn-select-all">Select all</button>
+    <button type="button" class="ghost" id="btn-clear-sel">Clear</button>
+    <button type="button" class="danger" id="btn-delete-sel">Delete</button>
+  </div>
+  <dialog id="lightbox">
+    <button class="icon-btn light-close" id="light-close" aria-label="Close">✕</button>
+    <button class="icon-btn light-nav prev" id="light-prev" aria-label="Previous">‹</button>
+    <img id="light-img" alt="" />
+    <button class="icon-btn light-nav next" id="light-next" aria-label="Next">›</button>
+    <div class="light-meta">
+      <div>
+        <strong id="light-name"></strong>
+        <p id="light-info"></p>
+      </div>
+      <label class="type-pick">
+        Type
+        <select id="light-type"></select>
+      </label>
+      <button type="button" class="danger" id="light-delete">Delete</button>
+    </div>
+  </dialog>
+  <dialog id="modal" class="modal">
+    <h2 id="modal-title">Confirm</h2>
+    <p id="modal-body"></p>
+    <div class="modal-actions">
+      <button type="button" class="ghost" id="modal-cancel">Cancel</button>
+      <button type="button" class="danger" id="modal-ok">Delete</button>
+    </div>
+  </dialog>
+  <dialog id="accounts-modal" class="modal accounts-modal">
+    <h2>Accounts & sync</h2>
+    <p class="sub">Sign in to pull photos in, or push filed albums back out. The Android APK can also read Samsung Gallery on the phone.</p>
+    <section class="account-card google">
+      <div class="account-head">
+        <strong>Google Photos</strong>
+        <span class="pill" id="google-pill">Not connected</span>
+      </div>
+      <p id="google-copy">Connect a Google account to sync this library with Google Photos.</p>
+      <label>OAuth client ID
+        <input id="google-client-id" type="text" autocomplete="off" spellcheck="false" />
+      </label>
+      <label>OAuth client secret
+        <input id="google-client-secret" type="password" autocomplete="off" />
+      </label>
+      <p class="hint">Create a Desktop or Web client in Google Cloud, enable the Photos Library API, and add this redirect URI:</p>
+      <code id="google-redirect"></code>
+      <div class="modal-actions left">
+        <button type="button" class="ghost" id="google-save">Save client</button>
+        <button type="button" class="primary" id="google-signin">Sign in with Google</button>
+        <button type="button" class="ghost" id="google-pull">Sync down</button>
+        <button type="button" class="ghost" id="google-push">Upload library</button>
+        <button type="button" class="ghost" id="google-out">Disconnect</button>
+      </div>
+    </section>
+    <section class="account-card samsung">
+      <div class="account-head">
+        <strong>Samsung Photos / Gallery</strong>
+        <span class="pill" id="samsung-pill">Not connected</span>
+      </div>
+      <p id="samsung-copy"></p>
+      <label>Gallery / DCIM folder on this computer
+        <input id="samsung-folder" type="text" placeholder="/sdcard/DCIM or a copied Gallery folder" />
+      </label>
+      <div class="modal-actions left">
+        <button type="button" class="ghost" id="samsung-save">Save folder</button>
+        <button type="button" class="primary" id="samsung-import">Import from Samsung Gallery</button>
+      </div>
+    </section>
+    <p class="hint" id="apk-note"></p>
+    <div class="modal-actions">
+      <button type="button" class="ghost" id="accounts-close">Close</button>
+    </div>
+  </dialog>
+  <dialog id="path-modal" class="modal">
+    <h2>Photo folder</h2>
+    <p>Lumina files photos on disk. Point it at a folder of pictures, or keep using the demo library.</p>
+    <input id="path-input" type="text" placeholder="/path/to/photos" />
+    <div class="modal-actions">
+      <button type="button" class="ghost" id="path-cancel">Cancel</button>
+      <button type="button" class="primary" id="path-save">Use this folder</button>
+    </div>
+  </dialog>
+  <input id="file-input" type="file" accept="image/*" multiple hidden />
+  <div id="toast" hidden></div>
+  <script src="/static/app.js"></script>
+</body>
+</html>
