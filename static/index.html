@@ -39,19 +39,11 @@
     <div class="shell">
       <aside class="sidebar" id="sidebar">
         <nav>
-          <button class="nav-item active" data-view="all">
-            <span class="nav-ico" aria-hidden="true">▦</span>
-            All photos
-            <em id="count-all">0</em>
-          </button>
+          <button class="nav-item active" data-view="all"><span class="nav-ico" aria-hidden="true">▦</span> All photos <em id="count-all">0</em></button>
           <p class="nav-label">Types</p>
           <div id="album-list"></div>
           <p class="nav-label">Library</p>
-          <button class="nav-item" data-view="trash">
-            <span class="nav-ico" aria-hidden="true">⌂</span>
-            Trash
-            <em id="count-trash">0</em>
-          </button>
+          <button class="nav-item" data-view="trash"><span class="nav-ico" aria-hidden="true">⌂</span> Trash <em id="count-trash">0</em></button>
         </nav>
         <p class="sidebar-note" id="library-path"></p>
       </aside>
@@ -80,14 +72,8 @@
     <img id="light-img" alt="" />
     <button class="icon-btn light-nav next" id="light-next" aria-label="Next">›</button>
     <div class="light-meta">
-      <div>
-        <strong id="light-name"></strong>
-        <p id="light-info"></p>
-      </div>
-      <label class="type-pick">
-        Type
-        <select id="light-type"></select>
-      </label>
+      <div><strong id="light-name"></strong><p id="light-info"></p></div>
+      <label class="type-pick">Type <select id="light-type"></select></label>
       <button type="button" class="danger" id="light-delete">Delete</button>
     </div>
   </dialog>
@@ -103,17 +89,10 @@
     <h2>Accounts & sync</h2>
     <p class="sub">Sign in to pull photos in, or push filed albums back out. The Android APK can also read Samsung Gallery on the phone.</p>
     <section class="account-card google">
-      <div class="account-head">
-        <strong>Google Photos</strong>
-        <span class="pill" id="google-pill">Not connected</span>
-      </div>
+      <div class="account-head"><strong>Google Photos</strong><span class="pill" id="google-pill">Not connected</span></div>
       <p id="google-copy">Connect a Google account to sync this library with Google Photos.</p>
-      <label>OAuth client ID
-        <input id="google-client-id" type="text" autocomplete="off" spellcheck="false" />
-      </label>
-      <label>OAuth client secret
-        <input id="google-client-secret" type="password" autocomplete="off" />
-      </label>
+      <label>OAuth client ID <input id="google-client-id" type="text" autocomplete="off" spellcheck="false" /></label>
+      <label>OAuth client secret <input id="google-client-secret" type="password" autocomplete="off" /></label>
       <p class="hint">Create a Desktop or Web client in Google Cloud, enable the Photos Library API, and add this redirect URI:</p>
       <code id="google-redirect"></code>
       <div class="modal-actions left">
@@ -125,23 +104,16 @@
       </div>
     </section>
     <section class="account-card samsung">
-      <div class="account-head">
-        <strong>Samsung Photos / Gallery</strong>
-        <span class="pill" id="samsung-pill">Not connected</span>
-      </div>
+      <div class="account-head"><strong>Samsung Photos / Gallery</strong><span class="pill" id="samsung-pill">Not connected</span></div>
       <p id="samsung-copy"></p>
-      <label>Gallery / DCIM folder on this computer
-        <input id="samsung-folder" type="text" placeholder="/sdcard/DCIM or a copied Gallery folder" />
-      </label>
+      <label>Gallery / DCIM folder on this computer <input id="samsung-folder" type="text" placeholder="/sdcard/DCIM or a copied Gallery folder" /></label>
       <div class="modal-actions left">
         <button type="button" class="ghost" id="samsung-save">Save folder</button>
         <button type="button" class="primary" id="samsung-import">Import from Samsung Gallery</button>
       </div>
     </section>
     <p class="hint" id="apk-note"></p>
-    <div class="modal-actions">
-      <button type="button" class="ghost" id="accounts-close">Close</button>
-    </div>
+    <div class="modal-actions"><button type="button" class="ghost" id="accounts-close">Close</button></div>
   </dialog>
   <dialog id="path-modal" class="modal">
     <h2>Photo folder</h2>
@@ -154,6 +126,8 @@
   </dialog>
   <input id="file-input" type="file" accept="image/*" multiple hidden />
   <div id="toast" hidden></div>
-  <script src="/static/app.js"></script>
+  <script src="/static/app-core.js"></script>
+  <script src="/static/app-ui.js"></script>
+  <script src="/static/app-accounts.js"></script>
 </body>
 </html>
