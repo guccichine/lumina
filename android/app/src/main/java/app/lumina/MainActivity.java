@@ -2,6 +2,7 @@ package app.lumina;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,12 +10,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
     private LocalServer server;
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -43,14 +39,9 @@ public class MainActivity extends AppCompatActivity {
         String perm = Build.VERSION.SDK_INT >= 33
                 ? Manifest.permission.READ_MEDIA_IMAGES
                 : Manifest.permission.READ_EXTERNAL_STORAGE;
-        if (ContextCompat.checkSelfPermission(this, perm) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{perm}, 42);
+        if (checkSelfPermission(perm) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{perm}, 42);
         }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override
