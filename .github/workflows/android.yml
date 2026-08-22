@@ -24,7 +24,7 @@ jobs:
       - name: Bundle web UI into the Android app
         run: |
           mkdir -p android/app/src/main/assets/www
-          cp static/index.html static/app.css static/app.js static/favicon.svg android/app/src/main/assets/www/
+          cp static/index.html static/app.css static/app-core.js static/app-ui.js static/app-accounts.js static/favicon.svg android/app/src/main/assets/www/
 
       - uses: gradle/actions/setup-gradle@v4
         with:
@@ -57,6 +57,6 @@ jobs:
             3. Open Lumina → **Accounts**
             4. Sign in to Google Photos, or tap **Import from Samsung Gallery**
 
-            This build is signed with the public debug key so you can sideload it. Play Store publishing is not included.
+            This build is signed with the public debug key so you can sideload it.
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
